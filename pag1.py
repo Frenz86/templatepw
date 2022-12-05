@@ -19,23 +19,15 @@ def main():
 
     df = pd.read_csv(url)
     st.dataframe(df)
-
     df.columns = ['ds','y']
     df['ds'] = pd.to_datetime(df['ds'])
 
     model = joblib.load('model_prophet.pkl')
-    model.fit(df)
-
     future = model.make_future_dataframe(50, freq='MS')
 
     #prediction
     forecast = model.predict(future)
-
-    #st.dataframe(forecast[['ds','yhat']])
-
-
     fig = plot_plotly(model, forecast)
-
     fig.update_layout(title="Forecast Air Passengers",
                     yaxis_title='Air Passengers',
                     xaxis_title="Date",
